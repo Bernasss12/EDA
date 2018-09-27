@@ -1,0 +1,4 @@
+﻿  main.cpp
+d:\documents\development\eda\src\main\eda_tp\main.cpp(19): warning C4326: return type of 'main' should be 'int' instead of 'void'
+d:\documents\development\eda\src\main\eda_tp\main.cpp(134): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  eda_tp.vcxproj -> D:\Documents\Development\EDA\src\main\Debug\eda_tp.exe
