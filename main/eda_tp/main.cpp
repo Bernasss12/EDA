@@ -3,26 +3,142 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <algorithm>
+#include <iostream>
+#include <Windows.h>
+
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+COORD localizacao_cursor = { 0, 0 };
 
 float *valores;
 int largura_coluna = 16;
+float max, min, media_total, desvio_padrao;
+float max_frequencia_relativa = 0;	
+int nlinhas;
+int nclasses;
 
 int freqAbsoluta(int, int, int);
 float freqRelativa(int, int, int);
-void printCell(char[], char);
+void printCell(std::string, char, int);
+void printCell(std::string, char, int, float);
+void printCell(std::string, char, int, int);
+void printErro(std::string, int);
+void printInput(int);
 void printCabecalho();
+void maximoFreqRelativa(int, int);
 void printLinha(int, int, int);
-void printDiv(int, char);
+void printDiv(int, int, int, char);
 std::string freqRelativaGrafica(int);
+void hist(int, int);
+float media(float, int);
+float desvioPadrao(float, int);
+void quebraLinha();
+void lerFicheiro(char*);
+void perguntarFicheiro();
+void limpaLinhas(int);
+
+COORD GetConsoleCursorPosition(HANDLE);
 
 void main()
 {
-	FILE *pfile;
 	char nome_ficheiro[] = { "d:\\EDA\\dados.txt" };
-	int nlinhas; // Nº de dados que o ficheiro contém
-	int nclasses; // Nº de classes do histograma
-	int i;
 				  
+	//perguntarFicheiro();
+	
+	lerFicheiro(nome_ficheiro);
+
+	maximoFreqRelativa(nclasses, nlinhas);
+	hist(nclasses, nlinhas);
+
+	
+	
+	delete[] valores;
+	printf("\n\n\n\n\n");
+	system("pause");
+}
+
+void perguntarFicheiro()
+{
+	COORD start = { 0,  3};
+	char drive;
+	char pasta_opcao;
+	int pasta = 0;
+	char pastas[20];
+	std::string caminho_final = "";
+	printDiv(4, 1, 1, 'T');
+	printCell((std::string)"Escolher o ficheiro", 'C', 4);	
+	quebraLinha();
+	printDiv(4, 1, 1, 'C');
+	do //Pedir a drive
+	{
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), start);
+		printf("\r");
+		printCell((std::string)"Em que drive se encontra o ficheiro? [C, D ou E]", 'L', 4);
+		quebraLinha();
+		printInput(4);
+		printDiv(4, 1, 1, 'B');
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), localizacao_cursor);
+		std::cin.clear();         // Limpa buffer para evitar loops
+		fflush(stdin);            // Limpa buffer para evitar loops
+		scanf_s(" %c", &drive);
+		drive = toupper(drive);
+		if(drive != 'C' && drive != 'D' && drive != 'E')
+		{
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), start);
+			printErro((std::string)"Drive invalida", 4);
+			printDiv(4, 1, 1, 'B');
+			limpaLinhas(5);
+			Sleep(500);
+		}
+	} while (drive != 'C' && drive != 'D' && drive != 'E');
+	do //Adicionar pastas ao caminho do ficheiro
+	{
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), start);
+		printf("\r");
+		printCell((std::string)"Deseja adicionar uma pasta ao caminho? (max. 5) [S, N]", 'L', 4);
+		quebraLinha();
+		printInput(4);
+		printDiv(4, 1, 1, 'B');
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), localizacao_cursor);
+		std::cin.clear();         // Limpa buffer para evitar loops
+		fflush(stdin);            // Limpa buffer para evitar loops
+		scanf_s(" %c", &pasta_opcao);
+		pasta_opcao = toupper(pasta_opcao);
+		if (pasta_opcao != 'S' && pasta_opcao != 'N')
+		{
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), start);
+			printErro((std::string)"Opcao invalida, tente S ou N", 4);
+			printDiv(4, 1, 1, 'B');
+			limpaLinhas(5);
+			Sleep(500);
+		} else if( pasta_opcao == 'S')
+		{
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), start);
+			printCell((std::string)"Escreva o nome da pasta:", 'L', 4);
+			quebraLinha();
+			printInput(4);
+			printDiv(4, 1, 1, 'B');
+			limpaLinhas(5);
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), localizacao_cursor);
+			std::cin.clear();         // Limpa buffer para evitar loops
+			fflush(stdin);            // Limpa buffer para evitar loops
+			//fgets(pastas);
+			pasta++;
+		}
+	} while (pasta_opcao != 'N');
+	printf(pastas);
+}
+
+void lerFicheiro(char* nome_ficheiro)
+{
+	FILE *pfile;
 	pfile = fopen(nome_ficheiro, "r");
 	if (pfile == NULL)
 		printf("Erro na abertura do ficheiro: %s\n", nome_ficheiro);
@@ -31,140 +147,272 @@ void main()
 		fscanf(pfile, "%d", &nclasses);
 		fscanf(pfile, "%d", &nlinhas);
 		valores = new float[nlinhas];
-		for (i = 0; i < nlinhas; i++)
+
+		max = min = 0;
+		float soma = 0;
+
+		for (int i = 0; i < nlinhas; i++) {
 			fscanf(pfile, "%f", &valores[i]);
-		printDiv(4, 'T');
-		printCabecalho();
-		printDiv(4, 'C');
-		for(i = 0; i < nclasses; i++) printLinha(i, nclasses, nlinhas);
-		printDiv(4, 'B');
-		delete[] valores;
-		system("pause");
+			if (valores[i] > max) max = valores[i];
+			if (valores[i] < min || i == 0) min = valores[i];
+			soma += valores[i];
+		}
+
+		media_total = media(soma, nlinhas);
+		desvio_padrao = desvioPadrao(soma, nlinhas);
+
+		fclose(pfile);
 	}
 }
 
-void hist(int classes, int linhas, float valores[])
+void hist(int classes, int linhas)
 {
-	
+	printDiv(4, 1, 1, 'T');
+	printCell((std::string)"Histograma", 'C', 4);
+	quebraLinha();
+	printDiv(4, 1, 4, 'C');
+	printCabecalho();
+	printDiv(4, 4, 4, 'C');
+	for (int i = 0; i < classes; i++) printLinha(i, classes, linhas);
+	printDiv(4, 4, 1, 'C');
+	printCell((std::string)"Amostras: ", 'O', 4, nlinhas);
+	quebraLinha();
+	printDiv(4, 1, 2, 'C');	
+	printCell((std::string)"Minimo: ", 'O', 2, min);
+	printCell((std::string)"Maximo: ", 'O', 2, max);	
+	quebraLinha();
+	printDiv(4, 2, 2, 'C');
+	printCell((std::string)"Media: ", 'O', 2, media_total);
+	printCell((std::string)"Desvio padrao: ", 'O', 2, desvio_padrao);
+	quebraLinha();
+	printDiv(4, 2, 1, 'B');
 }
 
-int freqAbsoluta(int classe, int classes, int nValores)
+int freqAbsoluta(int classe, int classes, int nvalores)
 {
-	int min = (100 / classes) * classe;
-	int max = (100 / classes) * (classe + 1);
+	int cmin = ((max - min) / classes) * classe;
+	int cmax = ((max - min) / classes) * (classe + 1);
 	int count = 0;
 
-	for(int i = 0; i < nValores; i++)
+	for(int i = 0; i < nvalores; i++)
 	{
-		if ((valores[i] >= min) && (valores[i] < max)) count++;
-		if ((classe + 1 == classes) && (valores[i] == max)) count++;
+		if ((valores[i] >= cmin) && (valores[i] < cmax)) count++;
+		if ((classe + 1 == classes) && (valores[i] == cmax)) count++;
 	}
 
 	return count;
 }
 
-float freqRelativa(int classe, int classes, int nValores)
+float freqRelativa(int classe, int classes, int nvalores)
 {
-	return ((freqAbsoluta(classe, classes, nValores)/(float)nValores)*100);
+	return ((freqAbsoluta(classe, classes, nvalores) / (float)nvalores) * 100);
 }
 
-void printRelativaGrafica(int freq_relativa)
+float media(float soma, int nvalores)
 {
-	int espaco = largura_coluna - 10;
-	int dez = ((int)freq_relativa) / 5;
-	int uni = (int)freq_relativa - (10 * (2*dez));
-	printf("%c", 186);
-	for (int i = 0; i < ceil(espaco / 2); i++) printf(" ");
-	for (int i = 0; i < dez; i++) printf("%c", 178);
-	if (uni < 3) printf(" ");
-	else if (uni > 3 && uni < 6) printf("%c", 177);
-	else if (uni > 6)  printf("%c", 176);
-	for (int i = 0; i < floor(espaco / 2) + (10 - dez - 1); i++) printf(" ");
+	return (soma / nvalores);
 }
 
-void printCell(std::string string, char mode)
+float desvioPadrao(float soma, int nvalores)
+{
+	float somatorio = 0;
+	for (int i = 0; i < nvalores; i++) somatorio += pow((valores[i] - media_total), 2);
+	return sqrt((somatorio / nvalores));
+}
+
+void maximoFreqRelativa(int classes, int nvalores)
+{
+	for(int i = 0; i < classes; i++)
+	{
+		if (freqRelativa(i, classes, nvalores) > max_frequencia_relativa) max_frequencia_relativa = freqRelativa(i, classes, nvalores);
+	}
+}
+
+void printRelativaGrafica(int freq_relativa, int colspan)
+{
+	int espaco = (colspan * largura_coluna) - 2;
+	int div = ceil(max_frequencia_relativa / espaco);
+	int tamanho = freq_relativa / div;
+	printf("%c ", 186);
+	for (int i = 0; i < tamanho; i++) printf("%c", 178);
+	for (int i = 0; i < espaco - tamanho; i++) printf("%c", 176);
+	printf(" ");
+}
+
+void printCell(std::string string, char mode, int colspan)
 {	
 	printf("%c", 186);
-	int espaco = largura_coluna - std::strlen(string.c_str());
+	int espaco = (largura_coluna*colspan) + (colspan - 1) - std::strlen(string.c_str());
 	switch (mode)
 	{
 	case 'L':
+		printf(" ");
 		printf(string.c_str());
-		for (int i = 0; i < espaco; i++) printf(" ");
+		for (int i = 0; i < espaco-1 ; i++) printf(" ");
 		break;
 	case 'C':
-		if ((std::strlen(string.c_str()) % 2) != 0) printf(" ");
-		for (int i = 0; i < ceil(espaco / 2); i++) printf(" ");
+		for (int i = 0; i < floor(espaco  / 2.0); i++) printf(" ");
 		printf(string.c_str());
-		for (int i = 0; i < floor(espaco / 2); i++) printf(" ");
+		for (int i = 0; i < ceil(espaco / 2.0); i++) printf(" ");
 		break;;
 	case 'R':
-		for (int i = 0; i < espaco; i++) printf(" ");
+		for (int i = 0; i < espaco-1; i++) printf(" ");
 		printf(string.c_str());
-		break;;
-	case '%':
-		espaco = largura_coluna - 6;
-		for (int i = 0; i < ceil(espaco / 2); i++) printf(" ");
-		std::string::size_type sz;		
-		float val = std::stof(string, &sz);
-		printf("%.2f%%", val);
-		for (int i = 0; i < floor(espaco / 2); i++) printf(" ");
+		printf(" ");
 		break;;
 	}
+}
+
+void printCell(std::string string, char mode, int colspan, float valor)
+{
+	float val = valor;
+	int digitos = 0;
+	if (val <= 0) digitos = 1;
+	while (val >= 1) {
+		val /= 10;
+		digitos++;
+	}
+	int espaco = (largura_coluna * colspan + (colspan - 3)) - (digitos + 3) - (string.length());
+	std::string resultado = string + "%.2f";
+	printf("%c ", 186);
+	printf(resultado.c_str(), valor);
+	if (mode == '%') printf("%%");
+	else printf(" ");
+	for (int i = 0; i < espaco; i++) printf(" ");
+}
+
+void printCell(std::string string, char mode, int colspan, int valor)
+{
+	float val = valor;
+	int digitos = 0;
+	if (val < 0) digitos = 1;
+	while (val >= 1) {
+		val /= 10.0;
+		digitos++;
+	}
+	int espaco = (largura_coluna * colspan) + (colspan - 1) - (digitos + 2) - (string.length());
+	std::string resultado = string + "%d";
+	printf("%c ", 186);
+	printf(resultado.c_str(), valor);
+	if (mode == '%') printf("%%");
+	else printf(" ");
+	for (int i = 0; i < espaco; i++) printf(" ");
+}
+
+void printErro(std::string string, int colspan)
+{
+	int espaco = (largura_coluna * colspan) + (colspan - 2) - (string.length());
+	printf("\r%c ", 186);
+	for (int i = 0; i < ceil(espaco / 2.0); i++) printf(" ");
+	printf(string.c_str());
+	for (int i = 0; i < floor(espaco / 2.0); i++) printf(" ");
+	printf("%c\n", 186);
+}
+
+void printInput(int colspan)
+{
+	int espaco = (largura_coluna*colspan) + (colspan) - 1;
+	printf("%c > ", 186);
+	//Obter posicao do cursor;
+	localizacao_cursor = GetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE));
+	for (int i = 0; i < espaco - 3; i++) printf(" ");
+	printf("%c\n", 186);
 }
 
 void printCabecalho()
 {
 
-	printCell("Valores", 'C');
-	printCell("F. Absoluta", 'C');
-	printCell("F. Relativa", 'C');
-	printCell("Rep. Grafica", 'C');
+	printCell("Valores", 'C', 1);
+	printCell("F. Absoluta", 'C', 1);
+	printCell("F. Relativa", 'C', 1);
+	printCell("Rep. Grafica", 'C', 1);
 	printf("%c\n", 186);
 }
 
 void printLinha(int linha, int nclasses, int nlinhas)
 {
-	std::string valor = (std::to_string((100 / nclasses)*linha)) + '-' + (std::to_string((100 / nclasses)*(linha+1)));
-	printCell(valor.c_str(), 'C');
+	std::string valor = (std::to_string((int)ceil(((max-min) / nclasses)*linha))) + '-' + (std::to_string((int)ceil(((max-min) / nclasses)*(linha+1))));
+	printCell(valor, 'L', 1);
 	std::string abs = std::to_string(freqAbsoluta(linha, nclasses, nlinhas));
-	printCell(abs.c_str(), 'C');
-	std::string rel = std::to_string(freqRelativa(linha, nclasses, nlinhas));
-	printCell(rel.c_str(), '%');
-	printRelativaGrafica(freqRelativa(linha, nclasses, nlinhas));
+	printCell(abs, 'C', 1);
+	printCell("", '%', 1, freqRelativa(linha, nclasses, nlinhas));
+	printRelativaGrafica(freqRelativa(linha, nclasses, nlinhas), 1);
 	printf("%c\n", 186);
 }
 
-void printDiv(int cols, char type)
+void printDiv(int colspan, int cols_acima, int cols_abaixo, char type)
 {
+	int max_cols = colspan;
 	switch (type)
 	{
 	case 'T':
 		printf("%c", 201);
-		for(int c = 1; c <= cols; c++)
+		for(int c = 1; c <= max_cols; c++)
 		{
 			for (int i = 0; i < largura_coluna; i++) printf("%c", 205);
-			if (c != cols) printf("%c", 203);
+			if (c != max_cols) {
+				if(((c % (max_cols/cols_acima)) == 0) && ((c % (max_cols / cols_abaixo)) == 0)) printf("%c", 206);
+				else if ((c % (max_cols / cols_acima)) == 0) printf("%c", 202);
+				else if ((c % (max_cols / cols_abaixo)) == 0) printf("%c", 203);
+				else printf("%c", 205);
+			}
 		}
 		printf("%c\n", 187);
 		break;
 	case 'C':
 		printf("%c", 204);
-		for (int c = 1; c <= cols; c++)
+		for (int c = 1; c <= max_cols; c++)
 		{
 			for (int i = 0; i < largura_coluna; i++) printf("%c", 205);
-			if (c != cols) printf("%c", 206);
+			if (c != max_cols) {
+				if (((c % (max_cols / cols_acima)) == 0) && ((c % (max_cols / cols_abaixo)) == 0)) printf("%c", 206);
+				else if ((c % (max_cols / cols_acima)) == 0) printf("%c", 202);
+				else if ((c % (max_cols / cols_abaixo)) == 0) printf("%c", 203);
+				else printf("%c", 205);
+			}
 		}
 		printf("%c\n", 185);
 		break;
 	case 'B':
 		printf("%c", 200);
-		for (int c = 1; c <= cols; c++)
+		for (int c = 1; c <= max_cols; c++)
 		{
 			for (int i = 0; i < largura_coluna; i++) printf("%c", 205);
-			if (c != cols) printf("%c", 202);
+			if (c != max_cols) {
+				if (((c % (max_cols / cols_acima)) == 0) && ((c % (max_cols / cols_abaixo)) == 0)) printf("%c", 206);
+				else if ((c % (max_cols / cols_acima)) == 0) printf("%c", 202);
+				else if ((c % (max_cols / cols_abaixo)) == 0) printf("%c", 203);
+				else printf("%c", 205);
+			}
 		}
 		printf("%c\n", 188);
 		break;
+	}
+}
+
+void quebraLinha()
+{
+	printf("%c\n", 186);
+}
+
+void limpaLinhas(int linhas)
+{
+	for(int i = 0; i < linhas; i++)
+	{
+		printf("                                                                                   \n");
+	}
+}
+
+COORD GetConsoleCursorPosition(HANDLE hConsoleOutput)
+{
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	if (GetConsoleScreenBufferInfo(hConsoleOutput, &cbsi))
+	{
+		return cbsi.dwCursorPosition;
+	}
+	else
+	{
+		COORD invalid = { 0, 0 };
+		return invalid;
 	}
 }
