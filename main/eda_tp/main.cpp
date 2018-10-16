@@ -40,7 +40,7 @@ void hist(int, int);
 float media(float, int);
 float desvioPadrao(float, int);
 void quebraLinha();
-void lerFicheiro(char*);
+bool lerFicheiro(char*);
 void perguntarFicheiro();
 void limpaLinhas(int);
 
@@ -52,7 +52,14 @@ void main()
 				  
 	//perguntarFicheiro();
 	
-	lerFicheiro(nome_ficheiro);
+	if (!lerFicheiro(nome_ficheiro)) {
+		printDiv(4, 1, 1, 'T');
+		printCell((std::string)"Erro na leitura do ficheiro.", 'C', 4);
+		quebraLinha();
+		printDiv(4, 1, 1, 'B');
+		printf("\n\n");
+		system("pause");
+	}
 
 	maximoFreqRelativa(nclasses, nlinhas);
 	hist(nclasses, nlinhas);
@@ -87,7 +94,7 @@ void perguntarFicheiro()
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), localizacao_cursor);
 		std::cin.clear();         // Limpa buffer para evitar loops
 		fflush(stdin);            // Limpa buffer para evitar loops
-		scanf_s(" %c", &drive);
+		scanf_s(" %c", &drive, 1);
 		drive = toupper(drive);
 		if(drive != 'C' && drive != 'D' && drive != 'E')
 		{
@@ -109,7 +116,7 @@ void perguntarFicheiro()
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), localizacao_cursor);
 		std::cin.clear();         // Limpa buffer para evitar loops
 		fflush(stdin);            // Limpa buffer para evitar loops
-		scanf_s(" %c", &pasta_opcao);
+		scanf_s(" %c", &pasta_opcao, 20);
 		pasta_opcao = toupper(pasta_opcao);
 		if (pasta_opcao != 'S' && pasta_opcao != 'N')
 		{
@@ -136,12 +143,12 @@ void perguntarFicheiro()
 	printf(pastas);
 }
 
-void lerFicheiro(char* nome_ficheiro)
+bool lerFicheiro(char* nome_ficheiro)
 {
 	FILE *pfile;
 	pfile = fopen(nome_ficheiro, "r");
 	if (pfile == NULL)
-		printf("Erro na abertura do ficheiro: %s\n", nome_ficheiro);
+		return false;
 	else
 	{
 		fscanf(pfile, "%d", &nclasses);
@@ -162,6 +169,7 @@ void lerFicheiro(char* nome_ficheiro)
 		desvio_padrao = desvioPadrao(soma, nlinhas);
 
 		fclose(pfile);
+		return true;
 	}
 }
 

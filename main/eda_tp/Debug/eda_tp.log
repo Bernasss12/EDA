@@ -1,16 +1,8 @@
 ﻿  main.cpp
-d:\documents\development\eda\src\main\eda_tp\main.cpp(50): warning C4326: return type of 'main' should be 'int' instead of 'void'
-d:\documents\development\eda\src\main\eda_tp\main.cpp(90): warning C4473: 'scanf_s' : not enough arguments passed for format string
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(90): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(90): note: the missing variadic argument 2 is required by format string '%c'
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(90): note: this argument is used as a buffer size
-d:\documents\development\eda\src\main\eda_tp\main.cpp(112): warning C4473: 'scanf_s' : not enough arguments passed for format string
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(112): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(112): note: the missing variadic argument 2 is required by format string '%c'
-  d:\documents\development\eda\src\main\eda_tp\main.cpp(112): note: this argument is used as a buffer size
-d:\documents\development\eda\src\main\eda_tp\main.cpp(193): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\documents\development\eda\src\main\eda_tp\main.cpp(194): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\documents\development\eda\src\main\eda_tp\main.cpp(234): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-d:\documents\development\eda\src\main\eda_tp\main.cpp(286): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-d:\documents\development\eda\src\main\eda_tp\main.cpp(339): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  eda_tp.vcxproj -> D:\Documents\Development\EDA\src\main\Debug\eda_tp.exe
+d:\development\eda\eda\main\eda_tp\main.cpp(50): warning C4326: return type of 'main' should be 'int' instead of 'void'
+d:\development\eda\eda\main\eda_tp\main.cpp(201): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\development\eda\eda\main\eda_tp\main.cpp(202): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\development\eda\eda\main\eda_tp\main.cpp(242): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\development\eda\eda\main\eda_tp\main.cpp(294): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\development\eda\eda\main\eda_tp\main.cpp(347): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  eda_tp.vcxproj -> D:\Development\eda\EDA\main\Debug\eda_tp.exe
