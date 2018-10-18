@@ -1,4 +1,7 @@
 ﻿  Matriz.cpp
 d:\documents\development\eda\src\main\eda_tp\matriz.cpp(167): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
 d:\documents\development\eda\src\main\eda_tp\matriz.cpp(179): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  main.cpp
+d:\documents\development\eda\src\main\eda_tp\main.cpp(8): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Generating Code...
   eda_tp.vcxproj -> D:\Documents\Development\EDA\src\main\Debug\eda_tp.exe
