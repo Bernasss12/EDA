@@ -10,17 +10,20 @@ void main()
 
 	Matriz matriz_a, matriz_b, matriz_c;
 
-	if (matriz_a.Ler(ficheiro_matriz))
+	if (!matriz_a.Ler(ficheiro_matriz))
 	{
-		printf("\nSuccess\n\n\n");
+		printf("Falhou a leitura da matriz.");
+		system("pause");
+		exit(1);
 	}
-	else
-	{
-		printf("\nFail\n\n\n");
-	};
 
-	matriz_a.DecomporLU().Escrever();
-	
+	matriz_a.Escrever();
+
+	matriz_c = matriz_a.DecomporLU();
+
+	matriz_c.Escrever();
+
 	printf("\n\n\n\n\n");
 	system("pause");
 }
+
