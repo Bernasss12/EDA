@@ -22,7 +22,7 @@ void Matriz::Iniciar(int nLinhas, int nColunas)
 		elems[i] = new float[colunas];
 		for (int j = 0; j < colunas; j++)
 		{
-			elems[i][j] = 0;
+			elems[i][j] = 0;//Todos os elementos sao inicializados como 0
 		}
 	}
 } 
@@ -155,6 +155,8 @@ Matriz Matriz::operator * (const Matriz& m1)
 //Decompoe matrizes
 Matriz Matriz::DecomporLU() 
 {
+	if (!Quadrada()) return Matriz();
+
 	Matriz upper = Matriz(linhas, colunas);
 	Matriz lower = Matriz(linhas, colunas);
 	Matriz temp = *this;
@@ -190,10 +192,94 @@ Matriz Matriz::DecomporLU()
 	}
 	return result + upper;
 }
+//Decompoe 
+Matriz Matriz::DecomporLU(char mode)
+{
+	if (!Quadrada()) return Matriz();
 
+	Matriz upper = Matriz(linhas, colunas);
+	Matriz lower = Matriz(linhas, colunas);
+	Matriz temp = *this;
+	Matriz result = Matriz(linhas, colunas);
+
+	for (int i = 0; i < linhas; i++)
+	{
+		// Matriz U
+		for (int k = i; k < linhas; k++) {
+			int sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += (lower.elems[i][j] * upper.elems[j][k]);
+			upper.elems[i][k] = temp.elems[i][k] - sum;
+		}
+
+		// Matriz L
+		for (int k = i; k < linhas; k++) {
+			if (i == k)
+				lower.elems[i][i] = 1; // Diagonal = 1
+			else {
+				int sum = 0;
+				for (int j = 0; j < i; j++)
+					sum += (lower.elems[k][j] * upper.elems[j][i]);
+				lower.elems[k][i] = (temp.elems[k][i] - sum) / upper.elems[i][i];
+			}
+		}
+	}
+	if(mode == 'L') return lower; //Devolve L
+	else if (mode == 'U') return  upper; //Devolve U
+	else return Matriz();
+}
+//Calcula o determinante da matriz
+float Matriz::calcularDet()
+{
+	if (!Quadrada()) return 0;
+	Matriz temp = DecomporLU();
+	float sum = 1;
+	for (int i = 0; i < linhas; i++)
+	{
+		sum = sum * temp.elems[i][i];
+	}
+	return sum;
+}
+//Calcula a inversa de uma matriz
+Matriz Matriz::obterInversa()
+{
+	if (!Quadrada()) return Matriz();
+
+	Matriz L = DecomporLU('L');
+	Matriz U = DecomporLU('U');
+	Matriz Y = Matriz(linhas, colunas);
+	Matriz B = Matriz(linhas, colunas);
+	Matriz BN = Matriz(linhas, 1);
+	float sum;
+
+	for (int n = 0; n < colunas; n++)//Colunas de Y e B
+	{
+		for (int i = 0; i < linhas; i++)//Linhas de Y
+		{
+			sum = 0;
+			for (int k = 0; k < i; k++) sum += L.elems[i][k] * Y.elems[k][n];
+			if (i == n) Y.elems[i][n] = 1 - sum;//Elemento de Y caso i=n
+			else Y.elems[i][n] = 0 - sum;//Elemento de Y caso i!=n
+		}
+
+		for (int i = linhas - 1; i >= 0; i--)
+		{
+			sum = 0; 
+			for (int k = colunas - 1; k > i; k--) sum += U.elems[i][k] * B.elems[k][n];
+			B.elems[i][n] = (Y.elems[i][n] - sum) / U.elems[i][i];//Elemento de B
+		}
+	}
+
+	return B;
+}
 
 /*** Funcoes extra ***/
 
+//Verifica se a matriz eh quadrada
+bool Matriz::Quadrada()
+{
+	return linhas == colunas;
+}
 //Devolve as linhas da matriz
 int Matriz::Linhas()
 {

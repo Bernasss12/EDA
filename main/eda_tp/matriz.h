@@ -23,9 +23,13 @@ public:
 	Matriz operator * (const Matriz& m1);
 	bool Ler(char* nome_ficheiro);
 	void Escrever();
-	Matriz DecomporLU();
+	Matriz DecomporLU(); 
+	Matriz DecomporLU(char);
+	float calcularDet();
+	Matriz obterInversa();
 
 	//Funcoes extra "getters"
+	bool Quadrada();
 	int Linhas();
 	int Colunas();
 	float Elemento(int linha, int coluna); 
