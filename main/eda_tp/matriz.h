@@ -24,8 +24,10 @@ public:
 	bool Ler(char* nome_ficheiro);
 	void Escrever();
 	Matriz DecomporLU();
+	Matriz DecomporLU(char);
 
 	//Funcoes extra "getters"
+	bool Quadrada();
 	int Linhas();
 	int Colunas();
 	float Elemento(int linha, int coluna); 

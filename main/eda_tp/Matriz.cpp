@@ -12,7 +12,7 @@ Matriz::Matriz()
 	colunas = 0;
 }
 // Cria uma matriz a 0 de acordo com os valores de linhas e colunas dados
-void Matriz::Iniciar(int nLinhas, int nColunas) 
+void Matriz::Iniciar(int nLinhas, int nColunas)
 {
 	linhas = nLinhas;
 	colunas = nColunas;
@@ -22,10 +22,10 @@ void Matriz::Iniciar(int nLinhas, int nColunas)
 		elems[i] = new float[colunas];
 		for (int j = 0; j < colunas; j++)
 		{
-			elems[i][j] = 0;
+			elems[i][j] = 0;//Todos os elementos sao inicializados como 0
 		}
 	}
-} 
+}
 // Cria matriz apartir de outra
 Matriz::Matriz(const Matriz& m1)
 {
@@ -37,19 +37,19 @@ Matriz::Matriz(const Matriz& m1)
 			elems[i][j] = m1.elems[i][j];
 		}
 	}
-} 
+}
 // Inicia matriz
 Matriz::Matriz(int nLinhas, int nColunas)
 {
 	Iniciar(nLinhas, nColunas);
-} 
+}
 // Apaga a matriz
 void Matriz::Apagar()
 {
 	for (int i = 0; i<linhas; i++)
 		delete[]elems[i];
 	delete[]elems;
-} 
+}
 // Le matriz apartir de ficheiro
 bool Matriz::Ler(char*nome_ficheiro)
 {
@@ -65,7 +65,7 @@ bool Matriz::Ler(char*nome_ficheiro)
 	}
 	fclose(ficheiro);
 	return true;
-} 
+}
 // Imprime a matriz
 void Matriz::Escrever()
 {
@@ -78,22 +78,22 @@ void Matriz::Escrever()
 		printf("\n");
 	}
 	printf("\n");
-} 
+}
 // Metodo destruidor de matrizes
 Matriz::~Matriz()
 {
 	Apagar();
-} 
+}
 // Verifica a possibilidade de somar duas matrizes
 bool Matriz::PodeSomar(const Matriz* pm)
 {
 	return linhas == pm->linhas && colunas == pm->colunas;
-} 
+}
 // Verifica a possibilidade de multiblicar duas matrizes
 bool Matriz::PodeMultiplicar(const Matriz* pm)
 {
 	return colunas == pm->linhas;
-} 
+}
 // Operador que iguala a matriz da direita à da esquerda
 const Matriz& Matriz::operator = (const Matriz& m1)
 {
@@ -107,7 +107,7 @@ const Matriz& Matriz::operator = (const Matriz& m1)
 	}
 
 	return *this;
-} 
+}
 // Operador que resulta na soma das matrizes em questao
 Matriz Matriz::operator + (const Matriz& m1)
 {
@@ -127,7 +127,7 @@ Matriz Matriz::operator + (const Matriz& m1)
 	}
 
 	return resultado;
-} 
+}
 // Operador que resulta no produto das matrizes inseridas
 Matriz Matriz::operator * (const Matriz& m1)
 {
@@ -151,10 +151,12 @@ Matriz Matriz::operator * (const Matriz& m1)
 		printf("\nO produto nao eh possivel");
 	}
 	return *this;
-} 
+}
 //Decompoe matrizes
-Matriz Matriz::DecomporLU() 
+Matriz Matriz::DecomporLU()
 {
+	if (!Quadrada()) return Matriz();
+
 	Matriz upper = Matriz(linhas, colunas);
 	Matriz lower = Matriz(linhas, colunas);
 	Matriz temp = *this;
@@ -190,10 +192,50 @@ Matriz Matriz::DecomporLU()
 	}
 	return result + upper;
 }
+//Decompoe 
+Matriz Matriz::DecomporLU(char mode)
+{
+	if (!Quadrada()) return Matriz();
 
+	Matriz upper = Matriz(linhas, colunas);
+	Matriz lower = Matriz(linhas, colunas);
+	Matriz temp = *this;
+	Matriz result = Matriz(linhas, colunas);
+
+	for (int i = 0; i < linhas; i++)
+	{
+		// Matriz U
+		for (int k = i; k < linhas; k++) {
+			int sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += (lower.elems[i][j] * upper.elems[j][k]);
+			upper.elems[i][k] = temp.elems[i][k] - sum;
+		}
+
+		// Matriz L
+		for (int k = i; k < linhas; k++) {
+			if (i == k)
+				lower.elems[i][i] = 1; // Diagonal = 1
+			else {
+				int sum = 0;
+				for (int j = 0; j < i; j++)
+					sum += (lower.elems[k][j] * upper.elems[j][i]);
+				lower.elems[k][i] = (temp.elems[k][i] - sum) / upper.elems[i][i];
+			}
+		}
+	}
+	if (mode == 'L') return lower; //Devolve L
+	else if (mode == 'U') return  upper; //Devolve U
+	else return Matriz();
+}
 
 /*** Funcoes extra ***/
 
+//Verifica se a matriz eh quadrada
+bool Matriz::Quadrada()
+{
+	return linhas == colunas;
+}
 //Devolve as linhas da matriz
 int Matriz::Linhas()
 {
