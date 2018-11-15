@@ -115,11 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Janela.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matriz.cpp" />
+    <ClCompile Include="Ponto.cpp" />
+    <ClCompile Include="Rectangulo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="matriz.h" />
+    <ClInclude Include="Janela.h" />
+    <ClInclude Include="Ponto.h" />
+    <ClInclude Include="Rectangulo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,3 @@
 ﻿  main.cpp
-d:\documents\development\eda\src\main\eda_tp\main.cpp(8): warning C4326: return type of 'main' should be 'int' instead of 'void'
-  eda_tp.vcxproj -> D:\Documents\Development\EDA\src\main\Debug\eda_tp.exe
+d:\development\eda\eda\main\eda_tp\main.cpp(9): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  eda_tp.vcxproj -> D:\Development\eda\EDA\main\Debug\eda_tp.exe
