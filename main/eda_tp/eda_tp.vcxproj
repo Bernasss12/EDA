@@ -23,6 +23,7 @@
     <ProjectGuid>{D9A06462-985B-461B-B20C-9D8BC8A95198}</ProjectGuid>
     <RootNamespace>edatp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>janela</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
