@@ -15,19 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Hist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Janela.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Ponto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rectangulo.h">
+    <ClInclude Include="Linha.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dados.h">
+    <ClInclude Include="Circulo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arvore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +41,13 @@
     <ClCompile Include="Ponto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rectangulo.cpp">
+    <ClCompile Include="Linha.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hist.cpp">
+    <ClCompile Include="Circulo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dados.cpp">
+    <ClCompile Include="Arvore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
