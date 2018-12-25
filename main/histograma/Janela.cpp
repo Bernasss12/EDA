@@ -16,17 +16,16 @@ Janela* Janela::ObterObjecto()
 {
 	return objecto;
 }
-bool Janela::Criar(char* sTitulo)
+bool Janela::Criar(char* sTitulo, char* sNome)
 {
 	WNDCLASSEX wndclass = { sizeof(WNDCLASSEX), CS_DBLCLKS, DespacharMensagens,
 		0, 0, GetModuleHandle(0), LoadIcon(0,IDI_APPLICATION),
-		LoadCursor(0,IDC_ARROW), HBRUSH(CTLCOLOR_STATIC + 1),
-		0, "minhaclasse", LoadIcon(0,IDI_APPLICATION) };
+		LoadCursor(0,IDC_ARROW),CreatePatternBrush((HBITMAP)LoadImage(0, sNome, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE)), 0, "minhaclasse", LoadIcon( 0, IDI_APPLICATION) };
 	if (RegisterClassEx(&wndclass))
 	{ // Função do SO Windows que cria janelas
 		janelaId = CreateWindowEx(0, "minhaclasse", sTitulo,
 			WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-			CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle(0), 0);
+			883, 566, 0, 0, GetModuleHandle(0), 0);
 		if (janelaId)
 		{
 			ShowWindow(janelaId, SW_SHOWDEFAULT);
@@ -34,7 +33,9 @@ bool Janela::Criar(char* sTitulo)
 		}
 	}
 	return false;
-}LRESULT CALLBACK Janela::DespacharMensagens(HWND janId, unsigned int msg,
+}
+
+LRESULT CALLBACK Janela::DespacharMensagens(HWND janId, unsigned int msg,
 	WPARAM wp, LPARAM lp)
 {
 	Janela* janela = ObterObjecto();
@@ -57,4 +58,4 @@ bool Janela::Criar(char* sTitulo)
 		break;
 	}
 	return DefWindowProc(janId, msg, wp, lp);
-}
+}

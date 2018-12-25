@@ -23,7 +23,7 @@
     <ProjectGuid>{A974E071-BDBB-4A7A-8DD4-7F3BCE9AE12F}</ProjectGuid>
     <RootNamespace>histograma</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
-    <ProjectName>arvore</ProjectName>
+    <ProjectName>mapa</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -119,19 +119,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Arvore.h" />
+    <ClInclude Include="Aresta.h" />
     <ClInclude Include="Circulo.h" />
     <ClInclude Include="Janela.h" />
     <ClInclude Include="Linha.h" />
     <ClInclude Include="Ponto.h" />
+    <ClInclude Include="Rede.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Arvore.cpp" />
+    <ClCompile Include="Aresta.cpp" />
     <ClCompile Include="Circulo.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Linha.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ponto.cpp" />
+    <ClCompile Include="Rede.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,7 +27,10 @@
     <ClInclude Include="Circulo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Arvore.h">
+    <ClInclude Include="Rede.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Aresta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +50,10 @@
     <ClCompile Include="Circulo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Arvore.cpp">
+    <ClCompile Include="Rede.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Aresta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

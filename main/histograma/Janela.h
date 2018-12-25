@@ -12,7 +12,7 @@ private:
 public:
 	Janela();
 	~Janela();
-	bool Criar(char* sTitulo);
+	bool Criar(char* sTitulo, char* sNome);
 	static LRESULT CALLBACK DespacharMensagens(HWND janId, unsigned int msg, WPARAM wp, LPARAM lp);
 	HWND ObterId() { return janelaId; }
 	bool Click() { return clickou; }
