@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Aresta.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Circulo.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Janela.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Linha.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Ponto.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Rede.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Aresta.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Circulo.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Janela.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Linha.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Ponto.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rede.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{1c65bd95-d57e-4511-bd41-f8fa746984a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{0b0ed158-1af7-432b-84ca-6ca9485ec5d5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
