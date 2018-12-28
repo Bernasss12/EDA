@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="Aresta.h" />
     <ClInclude Include="Circulo.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Janela.h" />
     <ClInclude Include="Linha.h" />
     <ClInclude Include="Ponto.h" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Aresta.cpp" />
     <ClCompile Include="Circulo.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Janela.cpp" />
     <ClCompile Include="Linha.cpp" />
     <ClCompile Include="main.cpp" />

@@ -1,9 +1,3 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (arvore.vcxproj, histograma.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Aresta.cpp
-d:\documents\development\eda\src\main\histograma\aresta.cpp(11): error C2600: 'Aresta::~Aresta': cannot define a compiler-generated special member function (must be declared in the class first)
-  main.cpp
-d:\documents\development\eda\src\main\histograma\main.cpp(13): warning C4005: 'RAIO': macro redefinition
-  d:\documents\development\eda\src\main\histograma\rede.h(2): note: see previous definition of 'RAIO'
-d:\documents\development\eda\src\main\histograma\main.cpp(16): warning C4326: return type of 'main' should be 'int' instead of 'void'
+﻿D:\Apps\MS\Visual Studio\2017 -  Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (arvore.vcxproj, histograma.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Rede.cpp
-  Generating Code...
+  histograma.vcxproj -> D:\Development\eda\EDA\main\Debug\mapa.exe

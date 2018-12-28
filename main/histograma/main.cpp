@@ -5,12 +5,11 @@
 #include "Rectangulo.h"
 #include "Janela.h"
 #include "Rede.h"
+#include "Graph.h"
 
 #define VERDE RGB(0,255,0)
 #define AZUL RGB(0,0,255)
 #define VERMELHO RGB(255,0,0)
-
-#define RAIO 
 
 void main()
 {
@@ -23,18 +22,22 @@ void main()
 
 	Rede rede = Rede();
 	rede.ObterNos(fich_mapa, fich_rede);
+	rede.CarregarCaminhos();
+	
+	Graph grafo(rede.nnos);
+	for (int i = 0; i < rede.ncaminhos; i++) grafo.InsertEdge(rede.caminhos[i]);
 
 	if (janela.Criar((char*)"Arvore binaria", (char*)imgpath)) {
 		if ((janelaId = janela.ObterId()) != NULL) {
-			for (int i = 0; i < rede.nnos; i++) {
-				rede.nos[i].Desenhar(janelaId);
-			}
-			rede.DesenharLinhas(janelaId);
+			
 			MSG msg;
 			while (GetMessage(&msg, 0, 0, 0)) {
 				DispatchMessage(&msg); 
 				if (janela.Click()) {
+					rede.update(janela, grafo);
 				}
+				rede.DesenharCaminhos(janelaId);
+				rede.DesenharNos(janelaId);
 			}
 		}
 	}

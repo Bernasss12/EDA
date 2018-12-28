@@ -1,19 +1,23 @@
 #pragma once
-#include "Rede.h"
 
 class Aresta {
 private:
-	int v;
-	int w;
+	int p;
+	int d;
 	float weight;
+	bool ativa;
 
 public:
 	Aresta();
-	Aresta(Rede r, int vi, int vf);
+	Aresta(float w, int vi, int vf);
 	~Aresta();
 
-	int Begin();
-	int End();
-	int Weight();
+	int Partida();
+	int Destino();
+	float Distancia();
+
+	bool Ativa() { return ativa; }
+	void Ativar() { ativa = true; }
+	void Desativar() { ativa = false; }
 };
 

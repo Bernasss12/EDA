@@ -4,16 +4,18 @@
 
 Aresta::Aresta()
 {
-	v = 0;
-	w = 0;
+	p = 0;
+	d = 0;
 	weight = 0;
+	ativa = false;
 }
 
-Aresta::Aresta(Rede r, int vi, int vf)
+Aresta::Aresta(float w, int vi, int vf)
 {
-	v = vi;
-	w = vf;
-	weight = Linha(r.nos[vi].c.Centro(), r.nos[vf].c.Centro()).ObterComprimento();
+	p = vi;
+	d = vf;
+	weight = w;
+	ativa = false;
 }
 
 
@@ -21,17 +23,17 @@ Aresta::~Aresta()
 {
 }
 
-int Aresta::Begin()
+int Aresta::Partida()
 {
-	return v;
+	return p;
 }
 
-int Aresta::End()
+int Aresta::Destino()
 {
-	return w;
+	return d;
 }
 
-int Aresta::Weight()
+float Aresta::Distancia()
 {
 	return weight;
 }
