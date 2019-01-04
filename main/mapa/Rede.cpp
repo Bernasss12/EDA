@@ -44,6 +44,7 @@ bool Rede::ObterNos(char * nPath, char * dPath)
 			//printf("\n%2d: ", i + 1);
 			int tempx, tempy;
 			fscanf_s(fNos, "%d,%d", &tempx, &tempy);
+			//Definicao do no
 			nos[i] = No(tempx, tempy, i + 1);
 			int nCaminhos = 0;
 			fscanf_s(fCaminhos, "%d,", &nCaminhos);
@@ -114,7 +115,6 @@ void Rede::CarregarCaminhos() {
 				//printf("\nAdicionado %d -> %d", partida_temp, destino_temp);
 			}
 			else {
-
 				//printf("\nJa existe %d -> %d", partida_temp, destino_temp);
 			}
 		}

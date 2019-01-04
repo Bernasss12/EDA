@@ -32,6 +32,8 @@ void main()
 	Graph grafo(rede.nnos);
 	for (int i = 0; i < rede.ncaminhos; i++) grafo.InsertEdge(rede.caminhos[i]);
 
+	//grafo.WriteADJ();
+
 	if (janela.Criar((char*)"Mapa", (char*)imgpath)) {
 		if ((janelaId = janela.ObterId()) != NULL) {
 			
