@@ -179,7 +179,7 @@ void Graph::WritePath(int v, int c) {
 	totalWeight = 0;
 	for (int i = 0; i < vert_number; i++) {
 		if (i == 0) { 
-			printf("\n\n%2d -> ", c + 1); 
+			printf("\n\n%2d <-- ", c + 1); 
 			totalWeight += PathWeight(c);
 		}
 		else if(c != v){

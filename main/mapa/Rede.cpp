@@ -33,10 +33,10 @@ bool Rede::ObterNos(char * nPath, char * dPath)
 	}else
 	{
 		int nnosc = 0;
-		fscanf_s(fNos, "%d", &nnos);
-		fscanf_s(fCaminhos, "%d", &nnosc);
+		fscanf_s(fNos, "%d", &nnos); //numero de nos definidos no ficheiro mapa
+		fscanf_s(fCaminhos, "%d", &nnosc); //numero de nos definidos no ficheiro rede
 
-		if (nnos != nnosc) return false;
+		if (nnos != nnosc) return false; //numero de nos definidos em ambos os ficheiros têm que ser identicos
 
 		nos = new No[nnos];
 
@@ -198,7 +198,7 @@ void Rede::update(Janela janela, Graph grafo)
 				fim = n;
 				grafo.WritePath(inicio, fim);
 				AtivarCaminho(inicio, fim, grafo);
-				printf("\n\n%d -> %d", inicio + 1, fim + 1);
+				printf("\n\n%d --> %d", inicio + 1, fim + 1);
 			}
 		}
 		else {

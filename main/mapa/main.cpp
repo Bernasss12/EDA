@@ -19,8 +19,14 @@ void main()
 	Janela janela;
 	HWND janelaId;
 
-	Rede rede = Rede();
-	rede.ObterNos(fich_mapa, fich_rede);
+	Rede rede;
+	if (rede.ObterNos(fich_mapa, fich_rede)) {
+		printf("Carregado com sucesso.");
+	}
+	else{
+		printf("Falha ao obter os nos.");
+		exit(1);
+	}
 	rede.CarregarCaminhos();
 	
 	Graph grafo(rede.nnos);
